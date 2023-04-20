@@ -21,7 +21,6 @@ const apiPaths = {
 
 function init() {
     fetchTrendingMovies();
-    // fetchAndBuildMovieSection(apiPaths.fetchTrendingList, 'Trending Now');
     fetchAndBuildAllSections();
 }
 
@@ -86,7 +85,11 @@ function fetchMovieSection(list, categoryName) {
     
     const movieCont = document.getElementById('movies-cont');
     const moviesListHTML = list.map(item =>{
-        return`<img class="movie-item" src="${imgPath}${item.backdrop_path}" alt="${item.title}" onClick="searchMovieTrailer('${item.title}')">`;
+        return`
+        <div class="movie-item" onmouseenter="searchMovieTrailer('${item.title}', 'yt${item.id}')">
+            <img class="movie-item-img" src="${imgPath}${item.backdrop_path}" alt="${item.title}"/>;
+            <iframe width="245px" height="150px" src="" id="yt${item.id}"></iframe>
+        </div>`;
     }).join('');
 
     // Create another HTML element
@@ -110,7 +113,8 @@ function fetchMovieSection(list, categoryName) {
     movieCont.append(div); 
 }
 
-function searchMovieTrailer(movieName) {
+function searchMovieTrailer(movieName, iframeId) {
+    console.log(document.getElementById(iframeId), iframeId)
     if (!movieName) return;
 
     fetch(apiPaths.searchOnYoutube(movieName))
@@ -119,7 +123,8 @@ function searchMovieTrailer(movieName) {
         const bestResult = res.items[0];
         const youTubeUrl = `https://www.youtube.com/watch?v=${bestResult.id.videoId}`;
         console.log(youTubeUrl)
-        window.open(youTubeUrl, '_blank');
+        // window.open(youTubeUrl, '_blank');
+        document.getElementById(iframeId).src = `https://www.youtube.com/embed/${bestResult.id.videoId}?autoplay=1&control=0`
     })
     .catch(err => console.error(err))
 }

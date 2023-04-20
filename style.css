@@ -245,10 +245,31 @@ header.black-bg {
 }
 
 .movie-item {
-    width: 230px;
+    width: 245px;
     object-fit: contain;
-    margin-right: 3.5px;
-    border-radius: 1px;
+    margin-right: 6px;
+    border-radius: 4px;
+    position: relative;
+}
+
+.movie-item-img {
+    width: inherit;
+}
+
+.movie-item iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    display: none;
+    border: none;
+    outline: none;
+}
+
+.movie-item:hover iframe {
+    display: block;
 }
 
 .movie-item:hover {
